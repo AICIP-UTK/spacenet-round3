@@ -1,24 +1,27 @@
 # spacenet-round3
 
-### TODO
-1. add everyone to github
-2. get code on github
-3. make a docker for code to work on lab computer
-4. download data
-5. add pictures of data to github
-6. add nice picture of plan to github
-7. work out how the linestring function works and its reverse
-8. mess with UNET
-9. add an example of the process to UNET
-10. write setup instructions for this project
-11. write a nice readme
+### The SpaceNet Challenge Round 3
+This challenge, presented by topcoder, can can be found here https://wwwtc.wpengine.com/spacenet. The data was on AWS, first 15GB per month is free. $5.75 for the other 79-15GB. Here is the official problem statement https://community.topcoder.com/longcontest/?module=ViewProblemStatement&rd=17036&pm=14735. This is how the scoring function works https://medium.com/the-downlinq/spacenet-road-detection-and-routing-challenge-part-i-d4f59d55bfce.
 
-### Links
-https://community.topcoder.com/longcontest/?module=ViewProblemStatement&rd=17036&pm=14735
+### Solution
+* add nice picture of plan to github
 
-https://wwwtc.wpengine.com/spacenet
+##### Input
 
-https://medium.com/the-downlinq/spacenet-road-detection-and-routing-challenge-part-i-d4f59d55bfce
+##### Segmentation
+* get code on github from maskrcnn
+* discuss how it works
+* decide if best way to start
+
+##### Linestring Conversion
+* create a linestring to image function
+* create an image to linestring function
+
+##### Environment Setup
+* make a docker for code to work on lab computer
+
+### Installation/Setup
+* write setup instructions for this project
 
 ### Contributors
 * Ramin Nabati
@@ -27,5 +30,6 @@ https://medium.com/the-downlinq/spacenet-road-detection-and-routing-challenge-pa
 * Elliot Greenlee
 * Steven Patrick
 
+### Notes
 chmod g+rw [fileToModify.txt]
 chmod -r g+rw *
