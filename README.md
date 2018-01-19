@@ -26,3 +26,6 @@ https://medium.com/the-downlinq/spacenet-road-detection-and-routing-challenge-pa
 * Razieh Kaviani
 * Elliot Greenlee
 * Steven Patrick
+
+chmod g+rw [fileToModify.txt]
+chmod -r g+rw *
