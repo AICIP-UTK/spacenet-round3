@@ -52,10 +52,10 @@ for image_file in image_files:
 				# Draw a line from last point to point
 				cv2.line(mask, last_point, point, (255, 255, 255), thickness=args.width)
 			last_point = point
-				
-
+	
 	# Write the mask file
 	cv2.imwrite(os.path.join(args.ground_directory, "ground_truth_{}_{}.tif".format(image_file[15:-4], args.width)), mask)
+	exit(1)
 
 
 
