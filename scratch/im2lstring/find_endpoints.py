@@ -13,7 +13,7 @@ def getLandmarks(corners):
 
 # lodes in img
 
-img = cv2.imread('img.png', cv2.IMREAD_COLOR)
+img = cv2.imread('gt.tif', cv2.IMREAD_COLOR)
 img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
 corners = cv2.goodFeaturesToTrack(img_gray, 200, 0.05, 10)
