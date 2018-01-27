@@ -2,10 +2,23 @@
 import numpy as np
 import cv2
 import csv
+import sys
+import os.path
+
+if(len(sys.argv) != 9):
+	print('wrong number of input arguments')
+	print('Usage Img2LnStrng.py minLineLength maxLineGap numIntersections accuracy grouping')
+	print('Suggestion: Img2LnStrng.py 20 3 150 .8 30 gtf_out.csv Vegas.png')
 
 
-outFile = 'gtf_out.csv'
-inpFile = 'gt.tif'
+minLineLength = int(sys.argv[1])
+maxLineGap = int(sys.argv[2])
+numIntersections = int(sys.argv[3])
+accuracy = float(sys.argv[4])
+grouping = float(sys.argv[5])
+outFile = sys.argv[6]
+inpFile = sys.argv[7]
+resultImage = sys.argv[8]
 
 #import image
 #img = cv2.imread('CurveTry.tif')
@@ -16,11 +29,11 @@ gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 #edges = cv2.Canny(gray,50,150,apertureSize = 3)
 
 #Hough Line parameters
-minLineLength = 10
-maxLineGap = 2
+#minLineLength = 20
+#maxLineGap = 10
 
 #Creating line segments out of Image
-lines = cv2.HoughLinesP(gray,.75,np.pi/180,50,minLineLength,maxLineGap)
+lines = cv2.HoughLinesP(gray,accuracy,np.pi/180,numIntersections,minLineLength,maxLineGap)
 
 myData = [['ImageId', 'WTxtd']]
 i = 1;
@@ -32,11 +45,11 @@ for x1,y1,x2,y2 in lines[0]:
 	addPoint2 = True
 	#Check to see if a similar point is already in the vector
 	for checking in points:
-		if(abs(x1-checking[0])+abs(y1-checking[1]) < 20):
+		if(abs(x1-checking[0])+abs(y1-checking[1]) < grouping):
 			addPoint1 = False
 			connection1 = points.index(checking)
 	for checking in points:
-		if(abs(x2-checking[0])+abs(y2-checking[1]) < 20):
+		if(abs(x2-checking[0])+abs(y2-checking[1]) < grouping):
 			addPoint2 = False
 			connection2 = points.index(checking)
 	#if statement that adds 2 pts, 1 pt, or just connections
@@ -68,10 +81,12 @@ for x, y, connection in points:
 		myData.append(['ImageId',command])
 
 #Create image with lines drawn on it
-cv2.imwrite('MaybeThisTime.jpg',img)
+completeImgName = os.path.join('./ParameterTesting/Img',resultImage)
+cv2.imwrite(completeImgName,img)
 
 #Create CSV file
-myFile = open(outFile,'w')
+completeCSVName = os.path.join('./ParameterTesting/CSV',outFile)
+myFile = open(completeCSVName,'w')
 with myFile:
 	writer = csv.writer(myFile)
 	writer.writerows(myData)

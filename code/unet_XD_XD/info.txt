@@ -1,0 +1,14 @@
+- 'valtest_ImageId.csv' and 'valtrain_ImageId.csv' files in the working directory
+	 are the image IDs of the training and test images respectivel.
+
+- 'bandcut' files are some statistical information about different bands in the
+	images, e.g. max, min values.
+
+- The '*_multiband_cut_threshold' functions in v5.py file find the max and min
+	values in the input images for the whole dataset. Outputs are the 'bandcut'
+	files.
+
+- The 'image_mask_resized_from_summary' function generates the mask image from 
+	the training set summary files.
+
+
