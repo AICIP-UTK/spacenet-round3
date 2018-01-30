@@ -169,14 +169,28 @@ def mask2linestrings(image, spacing):
     linestrings = skeleton2linestrings(skeletonized, spacing)
     return linestrings
 
-def write_linestrings(linestrings):
+def write_csv_predict(images, image_ids, spacing):
+    with open() as csv_predict:
+        csv_predict.write("ImageId,WKT_Pix\n")
 
-    # Write the linestrings to a mask to test
-    mask = np.zeros((height, width))
-    for linestring in linestrings:
-        for i, coordinate in enumerate(linestring):
-            if i is not 0:
-                cv2.line(mask, (last_coordinate[1], last_coordinate[0]), (coordinate[1], coordinate[0]),
-                     (white, white, white), thickness=1)
 
-            last_coordinate = coordinate
+        for image, image_id in zip(images, image_ids):
+            linestrings = mask2linestrings(image, spacing)
+
+            if len(linestrings) == 0:
+                lines = ["{},LINESTRING EMPTY".format(image_id)]
+            else:
+
+                lines = []
+
+                for linestring in linestrings:
+                    line = "{},\"LINESTRING (".format(image_id)
+                    for i, coordinate in enumerate(linestring):
+                        line += "{} {}".format(coordinate[1], coordinate[0])
+                        if i != (len(linestring-1)):
+                            line += ", "
+                        else:
+                            line += ")\""
+
+            for line in lines:
+                csv_predict.write(line+"\n")
