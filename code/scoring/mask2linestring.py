@@ -170,7 +170,7 @@ def mask2linestrings(image, spacing):
     return linestrings
 
 def write_csv_predict(images, image_ids, spacing):
-    with open() as csv_predict:
+    with open("super_accurate.csv", 'w') as csv_predict:
         csv_predict.write("ImageId,WKT_Pix\n")
 
 
