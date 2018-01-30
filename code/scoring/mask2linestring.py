@@ -126,7 +126,7 @@ def follow(jobs, image, old_location):
 
 # Given a skeletonized image, finds the linestrings that define it
 # If the linestrings have gaps in them less than or equal to spacing, they still count
-def mask2linestrings(image, spacing):
+def skeleton2linestrings(image, spacing):
 
     linestrings = []
 
@@ -153,45 +153,30 @@ def mask2linestrings(image, spacing):
 
     return linestrings
 
+def mask2linestrings(image, spacing):
+    searches = []
 
-# Parse arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('--image_file', type=str, default="ground_truth_AOI_2_Vegas_img369_10.tif", help="image file to convert")
-args = parser.parse_args()
+    # Create the constant search grids needed to look for pixels
+    for i in range(spacing):
+        searches.append(grid(i + 1))
 
-searches = []
+    # Skeletonize the image
+    skeletonized = morphology.medial_axis(image)
+    skeletonized = skeletonized.astype(np.uint8)
+    skeletonized *= 255
 
-# Create the constant search grids needed to look for pixels
-for i in range(spacing):
-    searches.append(grid(i + 1))
+    # Find the linestrings from the image
+    linestrings = skeleton2linestrings(skeletonized, spacing)
+    return linestrings
 
-# Open opencv thing based on file name
-image = cv2.imread(args.image_file, -1)
+def write_linestrings(linestrings):
 
-# Skeletonize the image
-skeletonized = morphology.medial_axis(image)
-skeletonized = skeletonized.astype(np.uint8)
-skeletonized *= 255
-
-# Write out the skeletonized image
-cv2.imwrite('skeletonized.tif', skeletonized)
-
-# Find the linestrings from the image
-linestrings = mask2linestrings(skeletonized, spacing)
-
-# Write the linestrings to a mask to test
-mask = np.zeros((height, width))
-total_points = 0
-for linestring in linestrings:
-    total_points += len(linestring)
-    for i, coordinate in enumerate(linestring):
-        if i is not 0:
-            cv2.line(mask, (last_coordinate[1], last_coordinate[0]), (coordinate[1], coordinate[0]),
+    # Write the linestrings to a mask to test
+    mask = np.zeros((height, width))
+    for linestring in linestrings:
+        for i, coordinate in enumerate(linestring):
+            if i is not 0:
+                cv2.line(mask, (last_coordinate[1], last_coordinate[0]), (coordinate[1], coordinate[0]),
                      (white, white, white), thickness=1)
 
-        last_coordinate = coordinate
-
-print(len(linestrings))
-print(total_points)
-cv2.imwrite('linestring_verify.tif', mask)
-
+            last_coordinate = coordinate
