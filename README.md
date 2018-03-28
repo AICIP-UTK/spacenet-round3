@@ -43,10 +43,11 @@ Here is the mask generated when we draw the linestrings extracted from the skele
 
 <img width="400" alt="screen shot 2018-01-26 at 10 35 35 am" src="https://user-images.githubusercontent.com/6694735/35447089-b6f35904-0284-11e8-98b8-8760fddd325f.png">
 
-
+<!--
 ### Contributors
 * Ramin Nabati
 * Alireza Rahimpour
 * Elliot Greenlee
 * Razieh Kaviani
 * Steven Patrick
+-->
