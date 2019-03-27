@@ -2,4 +2,9 @@ data
 *.aux.xml
 *.h5
 *.swp
+*.zip
 docker/
+archive/
+submission/
+*.png
+*.csv

@@ -42,10 +42,10 @@ while decrement:
         maxInt = int(maxInt/10)
         decrement = True
 
-data_path = '../data'
-train_wkt = pd.read_csv(os.path.join(data_path, 'train_wkt_v4.csv'))
-gs = pd.read_csv(os.path.join(data_path, 'grid_sizes.csv'), names=['ImageId', 'Xmax', 'Ymin'], skiprows=1)
-shapes = pd.read_csv(os.path.join(data_path, '3_shapes.csv'))
+#data_path = '../data'
+#train_wkt = pd.read_csv(os.path.join(data_path, 'train_wkt_v4.csv'))
+#gs = pd.read_csv(os.path.join(data_path, 'grid_sizes.csv'), names=['ImageId', 'Xmax', 'Ymin'], skiprows=1)
+#shapes = pd.read_csv(os.path.join(data_path, '3_shapes.csv'))
 
 epsilon = 1e-15
 
@@ -303,3 +303,30 @@ def make_prediction_cropped(model, X_train, initial_size=(572, 572), final_size=
              predicted_mask[:, h: h + final_size[0], w: w + final_size[0]] = prediction[i]
 
     return predicted_mask[:, :height, :width]
+
+
+
+def linestring2mask(image_file, df, height, width):
+
+	lines = df[df['ImageId'] == image_file[15:-4]]
+
+        # Create a black background image
+        mask = np.zeros((height, width))
+
+        # Iterate over each linestring
+        for line in lines['WKT_Pix']:
+                coordinates = line[12:-1].split(', ')
+                if coordinates[0] == 'MPT':
+                        continue
+
+                for i, coordinate in enumerate(coordinates):
+                        point = coordinate.split(' ')
+                        x = int(float(point[0]))
+                        y = int(float(point[1]))
+                        point = (x, y)
+                        if i is not 0:
+                                # Draw a line from last point to point
+                                cv2.line(mask, last_point, point, (255, 255, 255), thickness=args.width)
+                        last_point = point
+	return mask
+
